@@ -21,11 +21,23 @@ export interface ChatMessage {
   fallback_used?: boolean;
 }
 
+export interface CodeArtifact {
+  agent: string;
+  name: string;
+  area: string;
+  filename: string;
+  language: string;
+  code: string;
+  note: string;
+  provider?: string;
+}
+
 export function useAgui() {
   const [events, setEvents] = useState<AguiEvent[]>([]);
   const [statuses, setStatuses] = useState<Record<string, NodeStatus>>({});
   const [pending, setPending] = useState<Record<string, AguiEvent>>({});
   const [chat, setChat] = useState<ChatMessage[]>([]);
+  const [artifacts, setArtifacts] = useState<CodeArtifact[]>([]);
   const [mode, setMode] = useState<string>("assist");
   const [connected, setConnected] = useState(false);
   const esRef = useRef<EventSource | null>(null);
@@ -86,6 +98,21 @@ export function useAgui() {
             return next;
           });
           break;
+        case "artifact":
+          setArtifacts((a) => [
+            {
+              agent: ev.agent as string,
+              name: ev.name as string,
+              area: ev.area as string,
+              filename: ev.filename as string,
+              language: ev.language as string,
+              code: ev.code as string,
+              note: ev.note as string,
+              provider: ev.provider as string,
+            },
+            ...a,
+          ].slice(0, 40));
+          break;
         case "mode.changed":
           setMode(ev.mode as string);
           break;
@@ -95,5 +122,8 @@ export function useAgui() {
     return () => es.close();
   }, []);
 
-  return { events, statuses, pending, chat, setChat, mode, setMode, connected };
+  return {
+    events, statuses, pending, chat, setChat,
+    artifacts, mode, setMode, connected,
+  };
 }

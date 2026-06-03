@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { ActivityFeed } from "@/components/ActivityFeed";
 import { ApprovalConsole } from "@/components/ApprovalConsole";
 import { ChatPanel } from "@/components/ChatPanel";
+import { CodePanel } from "@/components/CodePanel";
 import { FlowLauncher } from "@/components/FlowLauncher";
 import { ModeToggle } from "@/components/ModeToggle";
 import { NetworkView } from "@/components/NetworkView";
@@ -11,7 +12,8 @@ import { PerformancePanel } from "@/components/PerformancePanel";
 import { useAgui } from "@/hooks/useAgui";
 
 export default function Dashboard() {
-  const { events, statuses, pending, chat, mode, setMode, connected } = useAgui();
+  const { events, statuses, pending, chat, artifacts, mode, setMode, connected } =
+    useAgui();
 
   // PerformancePanel refetches whenever a new appraisal arrives.
   const appraisalTick = useMemo(
@@ -48,7 +50,10 @@ export default function Dashboard() {
         </aside>
       </div>
 
-      <ActivityFeed events={events} />
+      <div className="bottom-row">
+        <CodePanel artifacts={artifacts} />
+        <ActivityFeed events={events} />
+      </div>
     </main>
   );
 }
