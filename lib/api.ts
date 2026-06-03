@@ -1,6 +1,20 @@
-// Thin client for the CDG AI FastAPI backend.
-export const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8000";
+// Thin client for the CDGAI FastAPI backend.
+// Resolution order:
+//   1. NEXT_PUBLIC_API_BASE (set in Vercel/.env.local) — always wins.
+//   2. In a deployed browser (non-localhost host) → the deployed backend URL.
+//   3. Local dev / SSR → http://localhost:8000.
+const DEPLOYED_BACKEND = "https://cmpo-cdgai-backend-agents-3i4u.vercel.app";
+
+function resolveBase(): string {
+  if (process.env.NEXT_PUBLIC_API_BASE) return process.env.NEXT_PUBLIC_API_BASE;
+  if (typeof window !== "undefined") {
+    const host = window.location.hostname;
+    if (host !== "localhost" && host !== "127.0.0.1") return DEPLOYED_BACKEND;
+  }
+  return "http://localhost:8000";
+}
+
+export const API_BASE = resolveBase();
 
 export async function apiGet<T>(path: string): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, { cache: "no-store" });
