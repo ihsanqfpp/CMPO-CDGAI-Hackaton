@@ -12,7 +12,7 @@ import { PerformancePanel } from "@/components/PerformancePanel";
 import { useAgui } from "@/hooks/useAgui";
 
 export default function Dashboard() {
-  const { events, statuses, pending, chat, artifacts, mode, setMode, connected } =
+  const { events, statuses, pending, artifacts, mode, setMode, connected } =
     useAgui();
 
   // PerformancePanel refetches whenever a new appraisal arrives.
@@ -41,7 +41,7 @@ export default function Dashboard() {
           <NetworkView statuses={statuses} />
         </div>
         <div className="col-chat">
-          <ChatPanel chat={chat} />
+          <ChatPanel />
         </div>
         <aside className="col-side">
           <FlowLauncher />

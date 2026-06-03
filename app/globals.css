@@ -577,6 +577,12 @@ body {
   background: rgba(91, 141, 239, 0.18);
   border-color: rgba(91, 141, 239, 0.45);
 }
+.chat-working {
+  font-size: 11px;
+  color: var(--good);
+  padding: 4px 2px;
+  animation: pulse 1.3s ease-in-out infinite;
+}
 .tag-row {
   display: flex;
   flex-wrap: wrap;
