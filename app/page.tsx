@@ -25,12 +25,16 @@ export default function Dashboard() {
     <main className="dashboard">
       <header className="topbar">
         <div className="brand">
-          <span className="brand-dot" />
-          <h1>CDGAI · Multi-Agent Operations</h1>
+          <span className="brand-mark">CD</span>
+          <div className="brand-text">
+            <h1>CDGAI</h1>
+            <span className="brand-sub">Multi-Agent Operations</span>
+          </div>
         </div>
         <div className="topbar-right">
           <span className={`conn ${connected ? "on" : "off"}`}>
-            {connected ? "● live" : "○ offline"}
+            <span className="conn-dot" />
+            {connected ? "Live" : "Offline"}
           </span>
           <ModeToggle mode={mode} onMode={setMode} />
         </div>

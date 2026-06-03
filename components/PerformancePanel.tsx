@@ -14,15 +14,28 @@ export function PerformancePanel({ tick }: { tick: number }) {
   const [rows, setRows] = useState<Appraisal[]>([]);
 
   useEffect(() => {
-    apiGet<{ appraisals: Appraisal[] }>("/api/appraisals")
-      .then((r) => setRows(r.appraisals))
-      .catch(() => setRows([]));
+    let alive = true;
+    const fetchRows = () =>
+      apiGet<{ appraisals: Appraisal[] }>("/api/appraisals")
+        .then((r) => alive && setRows(r.appraisals))
+        .catch(() => {});
+    fetchRows();
+    // Real-time: refresh on every appraisal event (tick) and on a 3s interval.
+    const t = setInterval(fetchRows, 3000);
+    return () => {
+      alive = false;
+      clearInterval(t);
+    };
   }, [tick]);
 
   return (
     <section className="panel">
       <div className="panel-head">
-        <h2>Performance — Hamza</h2>
+        <div className="panel-title">
+          <h2>Performance</h2>
+          <span className="panel-hint">Live appraisals by Hamza</span>
+        </div>
+        <span className="live-dot" title="updating live" />
       </div>
       {rows.length === 0 ? (
         <p className="empty">No appraisals yet. Run a flow.</p>

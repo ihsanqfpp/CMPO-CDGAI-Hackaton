@@ -51,9 +51,22 @@ export function NetworkView({
   const [roster, setRoster] = useState<RosterResponse | null>(null);
 
   useEffect(() => {
-    apiGet<RosterResponse>("/api/agents")
-      .then(setRoster)
-      .catch(() => setRoster(null));
+    let alive = true;
+    // Retry until the roster loads (the backend may not be up at first mount),
+    // then keep it fresh. Without this the graph stays empty forever if the
+    // first fetch fails.
+    const fetchRoster = () =>
+      apiGet<RosterResponse>("/api/agents")
+        .then((r) => {
+          if (alive && r?.agents?.length) setRoster(r);
+        })
+        .catch(() => {});
+    fetchRoster();
+    const t = setInterval(fetchRoster, 4000);
+    return () => {
+      alive = false;
+      clearInterval(t);
+    };
   }, []);
 
   const nodes: Node[] = useMemo(() => {
