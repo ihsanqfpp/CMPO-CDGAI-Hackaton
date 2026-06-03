@@ -25,6 +25,7 @@ export interface CodeArtifact {
   agent: string;
   name: string;
   area: string;
+  project?: string;
   filename: string;
   language: string;
   code: string;
@@ -104,6 +105,7 @@ export function useAgui() {
               agent: ev.agent as string,
               name: ev.name as string,
               area: ev.area as string,
+              project: ev.project as string,
               filename: ev.filename as string,
               language: ev.language as string,
               code: ev.code as string,

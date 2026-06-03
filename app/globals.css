@@ -454,6 +454,64 @@ body {
     grid-template-columns: 1fr;
   }
 }
+.proj-select {
+  width: 100%;
+  margin-bottom: 8px;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 6px 8px;
+  font-size: 12px;
+}
+.tree {
+  max-height: 360px;
+  overflow-y: auto;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+}
+.tree-root {
+  color: var(--good);
+  padding: 4px 8px;
+  font-weight: 600;
+}
+.tree-dir {
+  color: #9fb0d0;
+  padding: 3px 8px;
+}
+.tree-file {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  cursor: pointer;
+  padding: 3px 8px;
+  text-align: left;
+}
+.tree-file:hover {
+  background: var(--panel-2);
+}
+.tree-icon {
+  flex-shrink: 0;
+}
+.tree-name {
+  color: #cfe3ff;
+}
+.tree-lang {
+  font-size: 10px;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 0 5px;
+}
+.tree-author {
+  margin-left: auto;
+  font-size: 10px;
+  color: var(--accent);
+}
 .code-list {
   display: flex;
   flex-direction: column;
