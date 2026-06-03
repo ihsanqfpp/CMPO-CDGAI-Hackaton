@@ -15,33 +15,32 @@ import { AgentNode } from "./AgentNode";
 
 const nodeTypes = { agent: AgentNode };
 
-// Hand-tuned layout matching the reference diagram: Maryam centered, A2A peers
-// to the right, the dev tree to the left, AG-UI operator below.
+// Top-down hierarchy: Maryam at the top, her reports beneath, then the dev tree
+// under Momin → Naqash → (Fateh/Shams/Usman/Ihsan).
 const POS: Record<string, { x: number; y: number }> = {
-  maryam: { x: 520, y: 330 },
-  hamza: { x: 520, y: 90 },
-  tariq: { x: 800, y: 150 },
-  momin: { x: 800, y: 330 },
-  zain: { x: 800, y: 510 },
-  naqash: { x: 250, y: 330 },
-  fateh: { x: 40, y: 170 },
-  shams: { x: 40, y: 330 },
-  usman: { x: 40, y: 490 },
-  ihsan: { x: 250, y: 560 },
+  maryam: { x: 470, y: 20 },
+  tariq: { x: 120, y: 180 },
+  momin: { x: 420, y: 180 },
+  zain: { x: 700, y: 180 },
+  hamza: { x: 950, y: 180 },
+  naqash: { x: 420, y: 340 },
+  fateh: { x: 140, y: 510 },
+  shams: { x: 360, y: 510 },
+  usman: { x: 580, y: 510 },
+  ihsan: { x: 800, y: 510 },
 };
 
 function edgeStyle(e: GraphEdge): Partial<Edge> {
+  const base = { type: "smoothstep" as const };
   if (e.kind === "direct")
-    return {
-      animated: true,
-      style: { stroke: "#3ef0a3", strokeWidth: 2.5 },
-    };
+    return { ...base, animated: true, style: { stroke: "#3ef0a3", strokeWidth: 2.5 } };
   if (e.kind === "dashed")
     return {
+      ...base,
       animated: false,
       style: { stroke: "#7a86a8", strokeWidth: 1.3, strokeDasharray: "5 5" },
     };
-  return { animated: false, style: { stroke: "#5b8def", strokeWidth: 1.6 } };
+  return { ...base, animated: false, style: { stroke: "#5b8def", strokeWidth: 1.6 } };
 }
 
 export function NetworkView({

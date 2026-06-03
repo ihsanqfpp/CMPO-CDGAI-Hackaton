@@ -508,10 +508,28 @@ body {
   background: rgba(91, 141, 239, 0.18);
   border-color: rgba(91, 141, 239, 0.45);
 }
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+.tag-chip {
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  color: var(--accent);
+  border-radius: 14px;
+  padding: 3px 10px;
+  font-size: 11px;
+  cursor: pointer;
+}
+.tag-chip:hover {
+  border-color: var(--accent);
+}
 .chat-input {
   display: flex;
   gap: 8px;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 .chat-input input {
   flex: 1;

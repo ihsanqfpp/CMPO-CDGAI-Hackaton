@@ -18,6 +18,14 @@ const COLORS: Record<string, string> = {
   ihsan: "#ffb27f",
 };
 
+// Maryam's direct reports — quick @-tags for giving orders.
+const TAGS = [
+  { id: "tariq", label: "@Tariq" },
+  { id: "momin", label: "@Momin" },
+  { id: "zain", label: "@Zain" },
+  { id: "hamza", label: "@Hamza" },
+];
+
 export function ChatPanel({ chat }: { chat: ChatMessage[] }) {
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
@@ -26,6 +34,10 @@ export function ChatPanel({ chat }: { chat: ChatMessage[] }) {
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chat.length]);
+
+  function tag(id: string) {
+    setText((t) => (t.startsWith(`@${id} `) ? t : `@${id} ${t.replace(/^@\w+\s/, "")}`));
+  }
 
   async function send() {
     const t = text.trim();
@@ -42,14 +54,15 @@ export function ChatPanel({ chat }: { chat: ChatMessage[] }) {
   return (
     <section className="panel chat-panel">
       <div className="panel-head">
-        <h2>Team Conversation — Maryam drives</h2>
+        <h2>You are Maryam — give orders</h2>
         <span className="count">{chat.length}</span>
       </div>
 
       <div className="chat-thread">
         {chat.length === 0 && (
           <p className="empty">
-            Assign an objective below. Maryam will ask the team — they answer for real.
+            Tag a teammate and give an order — e.g. “@momin build the backend API”.
+            They&apos;ll cascade it down the team and report back.
           </p>
         )}
         {chat.map((m, i) => {
@@ -62,7 +75,7 @@ export function ChatPanel({ chat }: { chat: ChatMessage[] }) {
                   {m.name?.[0] ?? "?"}
                 </span>
                 <span className="chat-name" style={{ color }}>
-                  {m.name}
+                  {m.sender === "maryam" ? "Maryam (you)" : m.name}
                   {m.to_name && (
                     <span className="chat-arrow"> → {m.to_name}</span>
                   )}
@@ -81,16 +94,23 @@ export function ChatPanel({ chat }: { chat: ChatMessage[] }) {
         <div ref={endRef} />
       </div>
 
+      <div className="tag-row">
+        {TAGS.map((t) => (
+          <button key={t.id} className="tag-chip" onClick={() => tag(t.id)}>
+            {t.label}
+          </button>
+        ))}
+      </div>
       <div className="chat-input">
         <input
           value={text}
-          placeholder="Assign an objective to Maryam…"
+          placeholder="Give an order, e.g. @momin build the backend…"
           onChange={(e) => setText(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && send()}
           disabled={busy}
         />
         <button onClick={send} disabled={busy || !text.trim()}>
-          {busy ? "…" : "Assign"}
+          {busy ? "…" : "Send"}
         </button>
       </div>
     </section>
